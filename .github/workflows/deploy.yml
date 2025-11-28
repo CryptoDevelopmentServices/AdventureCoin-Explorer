@@ -30,14 +30,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Copy entire repo exactly as-is (wallet, paper-wallets, etc)
+      # Copy entire repo 1:1 into deploy folder (no exclusions except .git + .github)
       - name: Prepare deploy folder
         run: |
           mkdir deploy
-          rsync -av \
-            --exclude=".git" \
-            --exclude=".github" \
-            ./ ./deploy/
+          cp -R ./* ./deploy/ || true
+          cp -R .* ./deploy/ 2>/dev/null || true
+          rm -rf deploy/.git
+          rm -rf deploy/.github
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
