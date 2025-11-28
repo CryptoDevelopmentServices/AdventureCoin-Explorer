@@ -26,23 +26,23 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: repo   # <-- CHECKOUT INTO "repo" FOLDER
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Copy entire repo 1:1 into deploy folder (no exclusions except .git + .github)
-      - name: Prepare deploy folder
+      - name: Prepare site folder (copy repo contents)
         run: |
-          mkdir deploy
-          cp -R ./* ./deploy/ || true
-          cp -R .* ./deploy/ 2>/dev/null || true
-          rm -rf deploy/.git
-          rm -rf deploy/.github
+          mkdir site
+          cp -R repo/* site/
+          cp -R repo/.* site/ 2>/dev/null || true
+          rm -rf site/.git
+          rm -rf site/.github
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./deploy"
+          path: "./site"
 
       - name: Deploy to GitHub Pages
         id: deployment
